@@ -19,9 +19,16 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
-        "styles.css"
+	      "../node_modules/primeng/resources/themes/kasper/theme.css", 
+	      "../node_modules/fullcalendar/dist/fullcalendar.min.css",
+	      "../node_modules/font-awesome/css/font-awesome.min.css",
+              "styles.css"
       ],
-      "scripts": [],
+      "scripts": [
+	      "../node_modules/jquery/dist/jquery.js",
+	      "../node_modules/moment/moment.js",
+	      "../node_modules/fullcalendar/dist/fullcalendar.min.js"
+	      ],
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",
