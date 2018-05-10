@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { EventService } from './service/event.service';
-import {MyEvent} from './event/event';
+import { MyEvent } from './event/event';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -14,6 +15,8 @@ export class AppComponent {
   header: any;
   dialogVisible = false;
   idGen = 100;
+  datePipe: DatePipe;
+
   constructor(private eventService: EventService) { }
 
     ngOnInit() {
@@ -41,28 +44,41 @@ export class AppComponent {
     }
 
     handleEventClick(e: any) {
+	console.log('I am here');
         this.event = new MyEvent();
         this.event.title = e.calEvent.title;
 
-        const start = e.calEvent.start;
-        const end = e.calEvent.end;
+        const start = new DatePipe('en-US')
+                            .transform(e.calEvent.start, 'yyyy-MM-dd HH:mm');
+        const end = new DatePipe('en-US')
+                            .transform(e.calEvent.end, 'yyyy-MM-dd HH:mm');
+	console.log('start ' + e.calEvent.start);
+	console.log('end ' + e.calEvent.end);
+	console.log('e.view.name = '+ e.view.name);
+	// console.log(start.format('YYYY-MM-DD hh:mm'));
+	console.log('Aft ' + start);
+	console.log('START l ' + this.event.start);
         if (e.view.name === 'month') {
-            start.stripTime();
+           // start.stripTime();
         }
 
         if (end) {
-            end.stripTime();
-            this.event.end = end.format();
+            // end.stripTime();
+           // this.event.end = end.format();
         }
 
         this.event.id = e.calEvent.id;
-        this.event.start = start.format();
+        // this.event.start = start.format();
+	this.event.start = new Date(e.calEvent.start);
+	this.event.end = new Date(e.calEvent.end);
         this.event.allDay = e.calEvent.allDay;
         this.dialogVisible = true;
     }
 
     saveEvent() {
         // update
+	console.log('SAVING');
+	console.log(this.event.start);
         if ( this.event.id) {
             const index: number = this.findEventIndexById(this.event.id);
             if (index >= 0) {

@@ -10,7 +10,7 @@ export class EventService {
     }
 
     getEvents(): Observable<any> {
-        return this.http.get('assets/scheduleevents3.json')
+        return this.http.get('assets/scheduleevents4.json')
             .map((response) => response);
     }
 }
