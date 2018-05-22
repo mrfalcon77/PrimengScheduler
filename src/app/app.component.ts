@@ -1,7 +1,18 @@
-import { Component } from '@angular/core';
-import { EventService } from './service/event.service';
+import { Component,
+         OnInit,
+         OnDestroy } from '@angular/core';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Rx';
+
 import { MyEvent } from './event/event';
 import { DatePipe } from '@angular/common';
+import { Subject } from 'rxjs/Subject';
+import * as moment from 'moment';
+import { EventService } from './service/event.service';
+
+
 
 @Component({
   selector: 'app-root',
@@ -32,14 +43,37 @@ export class AppComponent {
     loadEvents(event: any) {
         const start = event.view.start;
         const end = event.view.end;
-	console.log('LOADING ' +  event.view.start);
+        console.log(event.view.name);
+	console.log('LOADING ' +  event.view.start + ' and ' + event.view.end);
+	console.log('LOADING formatted ' +  event.view.start.format() + ' and ' + event.view.end.format());
+	console.log('Moment ' +  moment(event.view.start) + ' and ' + moment(event.view.start).startOf('month'));
+	if(moment(event.view.start).isSame(moment(event.view.start).startOf('month'))) {
+		console.log('First day');
+		console.log(moment(event.view.start).format('YYYY-MM'));
+	} else {
+		console.log('Last day');
+		console.log(moment(event.view.start).endOf('month').add(1,'days').format('YYYY-MM'));
+	}
         // In real time the service call filtered based on start and end dates
         this.eventService.getEvents().subscribe((events: any) => {this.events = events.data; this.events.forEach(function(e){console.log(e)});});
 	
     }
     handleDayClick(event: any) {
         this.event = new MyEvent();
-        this.event.start = event.date.format();
+        let start: Date;
+        if (event.view.name === 'month') {
+            start = event.date;
+            // start.setDate(12);
+            let today = moment(event.date);
+	    let tomorrow = moment(today).add(8, 'hours'); // startOf('hour');
+            console.log('Month! ' + event.date.format());
+            console.log('Month2! ' + JSON.stringify(start));
+            console.log('Month3! ' + JSON.stringify(today));
+            console.log('Month4! ' + JSON.stringify(tomorrow));
+            this.event.start = tomorrow.toDate();
+        } else {
+            console.log('Daily! ' + event.date.format());        
+        }
         this.dialogVisible = true;
     }
 
