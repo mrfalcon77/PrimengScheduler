@@ -3,12 +3,10 @@ import { Component,
          OnDestroy } from '@angular/core';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs/Rx';
-import { Observable } from 'rxjs/Rx';
+import { Subscription ,  Observable ,  Subject } from 'rxjs';
 
 import { MyEvent } from './event/event';
 import { DatePipe } from '@angular/common';
-import { Subject } from 'rxjs/Subject';
 import * as moment from 'moment';
 import { EventService } from './service/event.service';
 

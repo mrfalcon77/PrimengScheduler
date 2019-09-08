@@ -1,7 +1,9 @@
+
+import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map'; 
+import { Observable } from 'rxjs';
+ 
 
 @Injectable()
 export class EventService {
@@ -10,7 +12,7 @@ export class EventService {
     }
 
     getEvents(): Observable<any> {
-        return this.http.get('assets/scheduleevents5.json')
-            .map((response) => response);
+        return this.http.get('assets/scheduleevents5.json').pipe(
+            map((response) => response));
     }
 }
